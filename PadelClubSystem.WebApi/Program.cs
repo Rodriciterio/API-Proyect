@@ -1,4 +1,11 @@
 
+using Microsoft.EntityFrameworkCore;
+using PadelClubSystem.Abstractions;
+using PadelClubSystem.Application;
+using PadelClubSystem.DataAccess;
+using PadelClubSystem.Repository;
+using PadelClubSystem.Services;
+
 namespace PadelClubSystem.WebApi
 {
     public class Program
@@ -13,6 +20,18 @@ namespace PadelClubSystem.WebApi
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<DbDataAccess>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+                        o => o.MigrationsAssembly("PadelClubSystem.WebApi"));
+                options.UseLazyLoadingProxies();
+            });
+
+            builder.Services.AddScoped(typeof(IStringServices), typeof(StringServices));
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            builder.Services.AddScoped(typeof(IApplication<>), typeof(Application<>));
+            builder.Services.AddScoped(typeof(IDbContext<>), typeof(DbContext<>));
 
             var app = builder.Build();
 

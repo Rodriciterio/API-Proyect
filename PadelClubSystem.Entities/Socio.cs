@@ -18,13 +18,12 @@ namespace PadelClubSystem.Entities
         public string Nombre { get; set; } = null!;
         [StringLength(30)]
         public string Apellido { get; set; } = null!;
-        [EmailAddress]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; } = null!;
         [StringLength(20)]
         public string Telefono { get; set; } = null!;
         public DateTime FechaAlta { get; set; } = DateTime.UtcNow;
         public bool Activo { get; set; } = true;
-
 
         public virtual ICollection<Reserva> Reservas { get; set; }
         public virtual ICollection<Pedido> Pedidos { get; set; } 

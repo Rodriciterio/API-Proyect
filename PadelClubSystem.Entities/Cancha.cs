@@ -18,7 +18,7 @@ namespace PadelClubSystem.Entities
         [Required(ErrorMessage = "Debe indicar el tipo de cancha.")]
         [StringLength(30, ErrorMessage = "El tipo no puede superar los 30 caracteres.")]
         public string Tipo { get; set; } = null!; // Ej: "Cubierta", "Descubierta", "Vidrio"
-        [Range(0.01, 9999.99, ErrorMessage = "El precio por hora debe ser mayor que 0.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "El precio por hora debe ser mayor que 0.")]
         public decimal PrecioHora { get; set; }
         public bool Activa { get; set; } = true;
 

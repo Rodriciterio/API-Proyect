@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PadelClubSystem.Application;
+using PadelClubSystem.Application.Dtos.Cancha;
+using PadelClubSystem.Application.Dtos.Socio;
 using PadelClubSystem.Entities;
 
 namespace PadelClubSystem.WebApi.Controllers
@@ -11,76 +14,76 @@ namespace PadelClubSystem.WebApi.Controllers
     {
         private readonly ILogger<CanchasController> _logger;
         private readonly IApplication<Cancha> _cancha;
+        private readonly IMapper _mapper;
 
-        public CanchasController(ILogger<CanchasController> logger, IApplication<Cancha> cancha)
+        public CanchasController(
+            ILogger<CanchasController> logger
+            , IApplication<Cancha> cancha
+            , IMapper mapper)
         {
             _logger = logger;
             _cancha = cancha;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Route("All")]
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            return Ok(_cancha.GetAll());
+            return Ok(_mapper.Map<IList<CanchaResponseDto>>(_cancha.GetAll()));
         }
 
         [HttpGet]
         [Route("ById")]
-        public IActionResult ById(int? Id)
+        public async Task<IActionResult> ById(int? Id)
         {
             if (!Id.HasValue)
+            {
                 return BadRequest();
-
+            }
             Cancha cancha = _cancha.GetById(Id.Value);
-            if (cancha == null)
+            if (cancha is null)
+            {
                 return NotFound();
-
-            return Ok(cancha);
+            }
+            return Ok(_mapper.Map<CanchaResponseDto>(cancha));
         }
 
         [HttpPost]
-        public IActionResult Crear(Cancha cancha)
+        public async Task<IActionResult> Crear(CanchaRequestDto canchaRequestDto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
+            { return BadRequest(); }
+            var cancha = _mapper.Map<Cancha>(canchaRequestDto);
             _cancha.Save(cancha);
             return Ok(cancha.Id);
         }
 
         [HttpPut]
-        public IActionResult Editar(int? Id, Cancha cancha)
+        public async Task<IActionResult> Editar(int? Id, CanchaRequestDto canchaRequestDto)
         {
             if (!Id.HasValue)
-                return BadRequest();
-
+            { return BadRequest(); }
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
+            { return BadRequest(); }
             Cancha canchaBack = _cancha.GetById(Id.Value);
-            if (canchaBack == null)
-                return NotFound();
-
-            canchaBack.Nombre = cancha.Nombre;
-            canchaBack.Tipo = cancha.Tipo;
-            canchaBack.PrecioHora = cancha.PrecioHora;
-            canchaBack.Activa = cancha.Activa;
-
+            if (canchaBack is null)
+            { return NotFound(); }
+            canchaBack = _mapper.Map<Cancha>(canchaRequestDto);
             _cancha.Save(canchaBack);
-            return Ok(canchaBack);
+            return Ok();
         }
 
         [HttpDelete]
-        public IActionResult Borrar(int? Id)
+        public async Task<IActionResult> Borrar(int? Id)
         {
             if (!Id.HasValue)
-                return BadRequest();
-
+            { return BadRequest(); }
+            if (!ModelState.IsValid)
+            { return BadRequest(); }
             Cancha canchaBack = _cancha.GetById(Id.Value);
-            if (canchaBack == null)
-                return NotFound();
-
+            if (canchaBack is null)
+            { return NotFound(); }
             _cancha.Delete(canchaBack.Id);
             return Ok();
         }

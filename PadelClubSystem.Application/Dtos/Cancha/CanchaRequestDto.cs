@@ -1,0 +1,18 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PadelClubSystem.Application.Dtos.Cancha
+{
+    public class CanchaRequestDto
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "El nombre de la cancha es obligatorio.")]
+        [StringLength(50, ErrorMessage = "El nombre no puede superar los 50 caracteres.")]
+        public string Nombre { get; set; } = null!;
+        [Required(ErrorMessage = "Debe indicar el tipo de cancha.")]
+        [StringLength(30, ErrorMessage = "El tipo no puede superar los 30 caracteres.")]
+        public string Tipo { get; set; } = null!; // Ej: "Cubierta", "Descubierta", "Vidrio"
+        [Range(0.01, double.MaxValue, ErrorMessage = "El precio por hora debe ser mayor que 0.")]
+        public decimal PrecioHora { get; set; }
+        public bool Activa { get; set; } = true;
+    }
+}

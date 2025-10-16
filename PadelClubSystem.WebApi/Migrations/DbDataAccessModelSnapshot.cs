@@ -249,7 +249,7 @@ namespace PadelClubSystem.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Canchas");
+                    b.ToTable("Canchas", (string)null);
                 });
 
             modelBuilder.Entity("PadelClubSystem.Entities.Entities.Reserva", b =>
@@ -281,7 +281,7 @@ namespace PadelClubSystem.WebApi.Migrations
 
                     b.HasIndex("SocioId");
 
-                    b.ToTable("Reservas");
+                    b.ToTable("Reservas", (string)null);
                 });
 
             modelBuilder.Entity("PadelClubSystem.Entities.Pago", b =>
@@ -305,7 +305,7 @@ namespace PadelClubSystem.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pagos");
+                    b.ToTable("Pagos", (string)null);
                 });
 
             modelBuilder.Entity("PadelClubSystem.Entities.PagoPedido", b =>
@@ -331,7 +331,7 @@ namespace PadelClubSystem.WebApi.Migrations
 
                     b.HasIndex("IdPedido");
 
-                    b.ToTable("PagoPedido");
+                    b.ToTable("PagoPedido", (string)null);
                 });
 
             modelBuilder.Entity("PadelClubSystem.Entities.Pedido", b =>
@@ -358,7 +358,7 @@ namespace PadelClubSystem.WebApi.Migrations
 
                     b.HasIndex("SocioId");
 
-                    b.ToTable("Pedidos");
+                    b.ToTable("Pedidos", (string)null);
                 });
 
             modelBuilder.Entity("PadelClubSystem.Entities.PedidoDetalle", b =>
@@ -387,7 +387,7 @@ namespace PadelClubSystem.WebApi.Migrations
 
                     b.HasIndex("ProductoId");
 
-                    b.ToTable("PedidosDetalles");
+                    b.ToTable("PedidosDetalles", (string)null);
                 });
 
             modelBuilder.Entity("PadelClubSystem.Entities.Producto", b =>
@@ -419,7 +419,7 @@ namespace PadelClubSystem.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Productos");
+                    b.ToTable("Productos", (string)null);
                 });
 
             modelBuilder.Entity("PadelClubSystem.Entities.Socio", b =>
@@ -457,7 +457,7 @@ namespace PadelClubSystem.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Socios");
+                    b.ToTable("Socios", (string)null);
                 });
 
             modelBuilder.Entity("PadelClubSystem.Entities.Torneo", b =>
@@ -484,7 +484,7 @@ namespace PadelClubSystem.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Torneos");
+                    b.ToTable("Torneos", (string)null);
                 });
 
             modelBuilder.Entity("PadelClubSystem.Entities.TorneoSocio", b =>
@@ -507,7 +507,7 @@ namespace PadelClubSystem.WebApi.Migrations
 
                     b.HasIndex("IdTorneo");
 
-                    b.ToTable("TorneosSocios");
+                    b.ToTable("TorneosSocios", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

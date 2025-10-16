@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PadelClubSystem.Application;
+using PadelClubSystem.Application.Dtos.Pedido;
+using PadelClubSystem.Application.Dtos.Socio;
 using PadelClubSystem.Entities;
 
 namespace PadelClubSystem.WebApi.Controllers
@@ -11,75 +14,76 @@ namespace PadelClubSystem.WebApi.Controllers
     {
         private readonly ILogger<PedidosController> _logger;
         private readonly IApplication<Pedido> _pedido;
+        private readonly IMapper _mapper;
 
-        public PedidosController(ILogger<PedidosController> logger, IApplication<Pedido> pedido)
+        public PedidosController(
+            ILogger<PedidosController> logger
+            , IApplication<Pedido> pedido
+            , IMapper mapper)
         {
             _logger = logger;
             _pedido = pedido;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Route("All")]
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            return Ok(_pedido.GetAll());
+            return Ok(_mapper.Map<IList<PedidoResponseDto>>(_pedido.GetAll()));
         }
 
         [HttpGet]
         [Route("ById")]
-        public IActionResult ById(int? Id)
+        public async Task<IActionResult> ById(int? Id)
         {
             if (!Id.HasValue)
+            {
                 return BadRequest();
-
+            }
             Pedido pedido = _pedido.GetById(Id.Value);
-            if (pedido == null)
+            if (pedido is null)
+            {
                 return NotFound();
-
-            return Ok(pedido);
+            }
+            return Ok(_mapper.Map<PedidoResponseDto>(pedido));
         }
 
         [HttpPost]
-        public IActionResult Crear(Pedido pedido)
+        public async Task<IActionResult> Crear(PedidoRequestDto pedidoRequestDto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
+            { return BadRequest(); }
+            var pedido = _mapper.Map<Pedido>(pedidoRequestDto);
             _pedido.Save(pedido);
             return Ok(pedido.Id);
         }
 
         [HttpPut]
-        public IActionResult Editar(int? Id, Pedido pedido)
+        public async Task<IActionResult> Editar(int? Id, PedidoRequestDto pedidoRequestDto)
         {
             if (!Id.HasValue)
-                return BadRequest();
-
+            { return BadRequest(); }
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
+            { return BadRequest(); }
             Pedido pedidoBack = _pedido.GetById(Id.Value);
-            if (pedidoBack == null)
-                return NotFound();
-            pedidoBack.Fecha = pedido.Fecha;
-            pedidoBack.Total = pedido.Total;
-            pedidoBack.Pagado = pedido.Pagado;
-            pedidoBack.SocioId = pedido.SocioId;
-
+            if (pedidoBack is null)
+            { return NotFound(); }
+            pedidoBack = _mapper.Map<Pedido>(pedidoRequestDto);
             _pedido.Save(pedidoBack);
-            return Ok(pedidoBack);
+            return Ok();
         }
 
         [HttpDelete]
-        public IActionResult Borrar(int? Id)
+        public async Task<IActionResult> Borrar(int? Id)
         {
             if (!Id.HasValue)
-                return BadRequest();
-
+            { return BadRequest(); }
+            if (!ModelState.IsValid)
+            { return BadRequest(); }
             Pedido pedidoBack = _pedido.GetById(Id.Value);
-            if (pedidoBack == null)
-                return NotFound();
-
+            if (pedidoBack is null)
+            { return NotFound(); }
             _pedido.Delete(pedidoBack.Id);
             return Ok();
         }

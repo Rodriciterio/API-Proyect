@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using PadelClubSystem.Application;
+using PadelClubSystem.Application.Dtos.Socio;
 using PadelClubSystem.Entities;
 
 namespace PadelClubSystem.WebApi.Controllers
@@ -10,17 +12,22 @@ namespace PadelClubSystem.WebApi.Controllers
     {
         private readonly ILogger<SociosController> _logger;
         private readonly IApplication<Socio> _socio;
-        public SociosController(ILogger<SociosController> logger, IApplication<Socio> socio)
+        private readonly IMapper _mapper;
+        public SociosController(
+            ILogger<SociosController> logger
+            , IApplication<Socio> socio
+            , IMapper mapper)
         {
             _logger = logger;
             _socio = socio;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Route("All")]
         public async Task<IActionResult> All()
         {
-            return Ok(_socio.GetAll());
+            return Ok(_mapper.Map<IList<SocioResponseDto>>(_socio.GetAll()));
         }
 
         [HttpGet]
@@ -36,20 +43,21 @@ namespace PadelClubSystem.WebApi.Controllers
             {
                 return NotFound();
             }
-            return Ok(socio);
+            return Ok(_mapper.Map<SocioResponseDto>(socio));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Crear(Socio socio)
+        public async Task<IActionResult> Crear(SocioRequestDto socioRequestDto)
         {
             if (!ModelState.IsValid)
             { return BadRequest(); }
+            var socio = _mapper.Map<Socio>(socioRequestDto);
             _socio.Save(socio);
             return Ok(socio.Id);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Editar(int? Id, Socio socio)
+        public async Task<IActionResult> Editar(int? Id, SocioRequestDto socioRequestDto)
         {
             if (!Id.HasValue)
             { return BadRequest(); }
@@ -58,11 +66,9 @@ namespace PadelClubSystem.WebApi.Controllers
             Socio socioBack = _socio.GetById(Id.Value);
             if (socioBack is null)
             { return NotFound(); }
-            socioBack.Nombre = socio.Nombre;
-            socioBack.Apellido = socio.Apellido;
-            socioBack.Email = socio.Email;
+            socioBack = _mapper.Map<Socio>(socioRequestDto);
             _socio.Save(socioBack);
-            return Ok(socioBack);
+            return Ok();
         }
 
         [HttpDelete]

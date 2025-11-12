@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using PadelClubSystem.Application.Dtos.Reserva;
-using PadelClubSystem.Entities.Entities;
+using PadelClubSystem.Entities;
 
 namespace PadelClubSystem.WebApi.Mapping
 {

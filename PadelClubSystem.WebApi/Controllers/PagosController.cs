@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PadelClubSystem.Application;
 using PadelClubSystem.Application.Dtos.Pago;
-using PadelClubSystem.Application.Dtos.Socio;
 using PadelClubSystem.Entities;
 
 namespace PadelClubSystem.WebApi.Controllers
@@ -28,7 +26,7 @@ namespace PadelClubSystem.WebApi.Controllers
 
         [HttpGet]
         [Route("All")]
-        public async Task <IActionResult> All()
+        public async Task<IActionResult> All()
         {
             return Ok(_mapper.Map<IList<PagoResponseDto>>(_pago.GetAll()));
         }

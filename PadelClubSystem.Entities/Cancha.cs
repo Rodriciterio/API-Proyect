@@ -1,5 +1,4 @@
 ﻿using PadelClubSystem.Abstractions;
-using PadelClubSystem.Entities.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace PadelClubSystem.Entities
@@ -24,6 +23,6 @@ namespace PadelClubSystem.Entities
 
         // Relaciones
         public virtual ICollection<Reserva> Reservas { get; set; }
-       
+
     }
 }

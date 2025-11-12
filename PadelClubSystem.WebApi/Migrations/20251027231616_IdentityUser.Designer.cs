@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PadelClubSystem.DataAccess;
 
@@ -11,9 +12,11 @@ using PadelClubSystem.DataAccess;
 namespace PadelClubSystem.WebApi.Migrations
 {
     [DbContext(typeof(DbDataAccess))]
-    partial class DbDataAccessModelSnapshot : ModelSnapshot
+    [Migration("20251027231616_IdentityUser")]
+    partial class IdentityUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,22 +27,6 @@ namespace PadelClubSystem.WebApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("PadelClubSystem.Entities.Anio", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Numero")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Anios");
-                });
 
             modelBuilder.Entity("PadelClubSystem.Entities.Cancha", b =>
                 {
@@ -70,7 +57,7 @@ namespace PadelClubSystem.WebApi.Migrations
                     b.ToTable("Canchas");
                 });
 
-            modelBuilder.Entity("PadelClubSystem.Entities.Cuota", b =>
+            modelBuilder.Entity("PadelClubSystem.Entities.Entities.Reserva", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -78,87 +65,28 @@ namespace PadelClubSystem.WebApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CaducaEn")
+                    b.Property<int>("CanchaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DuracionMinutos")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaHora")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdAnio")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdMes")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Valor")
+                    b.Property<decimal>("Precio")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("SocioId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdAnio");
+                    b.HasIndex("CanchaId");
 
-                    b.HasIndex("IdMes");
+                    b.HasIndex("SocioId");
 
-                    b.ToTable("Cuotas");
-                });
-
-            modelBuilder.Entity("PadelClubSystem.Entities.CuotaPorSocio", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AnioId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("FechaPago")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IdCouta")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdSocio")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MesId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Recargo")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Valor")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnioId");
-
-                    b.HasIndex("IdCouta");
-
-                    b.HasIndex("IdSocio");
-
-                    b.HasIndex("MesId");
-
-                    b.ToTable("CoutasPorSocios");
-                });
-
-            modelBuilder.Entity("PadelClubSystem.Entities.Mes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Meses");
+                    b.ToTable("Reservas");
                 });
 
             modelBuilder.Entity("PadelClubSystem.Entities.MicrosoftIdentity.Role", b =>
@@ -513,38 +441,6 @@ namespace PadelClubSystem.WebApi.Migrations
                     b.ToTable("Productos");
                 });
 
-            modelBuilder.Entity("PadelClubSystem.Entities.Reserva", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CanchaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DuracionMinutos")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("FechaHora")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Precio")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("SocioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CanchaId");
-
-                    b.HasIndex("SocioId");
-
-                    b.ToTable("Reservas");
-                });
-
             modelBuilder.Entity("PadelClubSystem.Entities.Socio", b =>
                 {
                     b.Property<int>("Id")
@@ -552,6 +448,9 @@ namespace PadelClubSystem.WebApi.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Apellido")
                         .IsRequired()
@@ -562,13 +461,7 @@ namespace PadelClubSystem.WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("FechaBaja")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FechaIngreso")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FechaNacimiento")
+                    b.Property<DateTime>("FechaAlta")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nombre")
@@ -576,9 +469,10 @@ namespace PadelClubSystem.WebApi.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<string>("TelefonoMovil")
+                    b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -635,48 +529,21 @@ namespace PadelClubSystem.WebApi.Migrations
                     b.ToTable("TorneosSocios");
                 });
 
-            modelBuilder.Entity("PadelClubSystem.Entities.Cuota", b =>
+            modelBuilder.Entity("PadelClubSystem.Entities.Entities.Reserva", b =>
                 {
-                    b.HasOne("PadelClubSystem.Entities.Anio", "Anio")
-                        .WithMany()
-                        .HasForeignKey("IdAnio")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PadelClubSystem.Entities.Mes", "Mes")
-                        .WithMany()
-                        .HasForeignKey("IdMes")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Anio");
-
-                    b.Navigation("Mes");
-                });
-
-            modelBuilder.Entity("PadelClubSystem.Entities.CuotaPorSocio", b =>
-                {
-                    b.HasOne("PadelClubSystem.Entities.Anio", null)
-                        .WithMany("CoutasPorSocios")
-                        .HasForeignKey("AnioId");
-
-                    b.HasOne("PadelClubSystem.Entities.Cuota", "Cuota")
-                        .WithMany("CoutasPorSocios")
-                        .HasForeignKey("IdCouta")
+                    b.HasOne("PadelClubSystem.Entities.Cancha", "Cancha")
+                        .WithMany("Reservas")
+                        .HasForeignKey("CanchaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PadelClubSystem.Entities.Socio", "Socio")
-                        .WithMany("CoutasPorSocios")
-                        .HasForeignKey("IdSocio")
+                        .WithMany("Reservas")
+                        .HasForeignKey("SocioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PadelClubSystem.Entities.Mes", null)
-                        .WithMany("CoutasPorSocios")
-                        .HasForeignKey("MesId");
-
-                    b.Navigation("Cuota");
+                    b.Navigation("Cancha");
 
                     b.Navigation("Socio");
                 });
@@ -754,7 +621,7 @@ namespace PadelClubSystem.WebApi.Migrations
             modelBuilder.Entity("PadelClubSystem.Entities.Pedido", b =>
                 {
                     b.HasOne("PadelClubSystem.Entities.Socio", "Socio")
-                        .WithMany()
+                        .WithMany("Pedidos")
                         .HasForeignKey("SocioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -781,29 +648,10 @@ namespace PadelClubSystem.WebApi.Migrations
                     b.Navigation("Producto");
                 });
 
-            modelBuilder.Entity("PadelClubSystem.Entities.Reserva", b =>
-                {
-                    b.HasOne("PadelClubSystem.Entities.Cancha", "Cancha")
-                        .WithMany("Reservas")
-                        .HasForeignKey("CanchaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PadelClubSystem.Entities.Socio", "Socio")
-                        .WithMany()
-                        .HasForeignKey("SocioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cancha");
-
-                    b.Navigation("Socio");
-                });
-
             modelBuilder.Entity("PadelClubSystem.Entities.TorneoSocio", b =>
                 {
                     b.HasOne("PadelClubSystem.Entities.Socio", "Socio")
-                        .WithMany()
+                        .WithMany("TorneosSocios")
                         .HasForeignKey("IdSocio")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -819,24 +667,9 @@ namespace PadelClubSystem.WebApi.Migrations
                     b.Navigation("Torneo");
                 });
 
-            modelBuilder.Entity("PadelClubSystem.Entities.Anio", b =>
-                {
-                    b.Navigation("CoutasPorSocios");
-                });
-
             modelBuilder.Entity("PadelClubSystem.Entities.Cancha", b =>
                 {
                     b.Navigation("Reservas");
-                });
-
-            modelBuilder.Entity("PadelClubSystem.Entities.Cuota", b =>
-                {
-                    b.Navigation("CoutasPorSocios");
-                });
-
-            modelBuilder.Entity("PadelClubSystem.Entities.Mes", b =>
-                {
-                    b.Navigation("CoutasPorSocios");
                 });
 
             modelBuilder.Entity("PadelClubSystem.Entities.Pago", b =>
@@ -858,7 +691,11 @@ namespace PadelClubSystem.WebApi.Migrations
 
             modelBuilder.Entity("PadelClubSystem.Entities.Socio", b =>
                 {
-                    b.Navigation("CoutasPorSocios");
+                    b.Navigation("Pedidos");
+
+                    b.Navigation("Reservas");
+
+                    b.Navigation("TorneosSocios");
                 });
 
             modelBuilder.Entity("PadelClubSystem.Entities.Torneo", b =>

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PadelClubSystem.Entities.Entities
+namespace PadelClubSystem.Entities
 {
     public class Reserva : IEntidad
     {

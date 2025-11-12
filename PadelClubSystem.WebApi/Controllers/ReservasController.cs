@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PadelClubSystem.Application;
 using PadelClubSystem.Application.Dtos.Reserva;
-using PadelClubSystem.Application.Dtos.Socio;
 using PadelClubSystem.Entities;
-using PadelClubSystem.Entities.Entities;
 
 namespace PadelClubSystem.WebApi.Controllers
 {

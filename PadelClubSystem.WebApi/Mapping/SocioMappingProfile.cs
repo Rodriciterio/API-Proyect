@@ -9,8 +9,8 @@ namespace PadelClubSystem.WebApi.Mapping
         public SocioMappingProfile()
         {
             CreateMap<Socio, SocioResponseDto>().
-               ForMember(dest => dest.FechaAlta, ori => ori.MapFrom(src => src.FechaAlta.ToShortDateString()));
-            CreateMap<SocioRequestDto, Socio>();
+               ForMember(dest => dest.FechaNacimiento, ori => ori.MapFrom(src => src.FechaNacimiento.ToShortDateString()));
+            CreateMap<SocioRequestDto, Socio>().ConstructUsing(dto => new Socio(dto.Nombre, dto.Apellido, dto.Email));
         }
     }
 }

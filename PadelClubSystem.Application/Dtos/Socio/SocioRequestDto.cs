@@ -13,7 +13,11 @@ namespace PadelClubSystem.Application.Dtos.Socio
         public string Email { get; set; }
         [StringLength(20)]
         public string Telefono { get; set; } = null!;
-        public DateTime FechaAlta { get; set; } = DateTime.UtcNow;
-        public bool Activo { get; set; } = true;
+        [DataType(DataType.Date)]
+        public DateTime FechaNacimiento { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime FechaIngreso { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? FechaBaja { get; set; }
     }
 }

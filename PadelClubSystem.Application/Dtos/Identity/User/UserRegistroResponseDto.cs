@@ -11,5 +11,7 @@ namespace PadelClubSystem.Application.Dtos.Identity.User
         public string Email { get; set; }
         [Required]
         public string UserName { get; set; }
+        [Required]
+        public string RolAsignado { get; set; }
     }
 }

@@ -15,5 +15,7 @@ namespace PadelClubSystem.Application.Dtos.Identity.User
         public string Password { get; set; }
         [DataType(DataType.Date)]
         public DateTime? FechaNacimiento { get; set; }
+        [Required]
+        public string Rol { get; set; }
     }
 }

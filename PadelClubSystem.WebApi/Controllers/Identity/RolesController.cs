@@ -26,14 +26,18 @@ namespace PadelClubSystem.WebApi.Controllers.Identity
         }
 
         [HttpGet]
-        [Route("GetAll")]
-        public async Task<IActionResult> GetAll()
+        [Route("AllowedRoles")]
+        [AllowAnonymous]
+        [Authorize(Roles = "Administrador, Socio")]
+        public IActionResult GetAllowedRoles()
         {
-            return Ok(_mapper.Map<IList<RoleResponseDto>>(_roleManager.Roles.ToList()));
+            var allowedRoles = new[] { "Socio", "Cliente", "Administrador" };
+            return Ok(allowedRoles);
         }
-
+       
         [HttpPost]
         [Route("Create")]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Guardar(RoleRequestDto roleRequestDto)
         {
             if (ModelState.IsValid)
@@ -42,6 +46,7 @@ namespace PadelClubSystem.WebApi.Controllers.Identity
                 try
                 {
                     var role = _mapper.Map<Role>(roleRequestDto);
+                    role.Id = Guid.NewGuid();
                     var result = _roleManager.CreateAsync(role).Result;
                     if (result.Succeeded)
                     {
@@ -63,7 +68,7 @@ namespace PadelClubSystem.WebApi.Controllers.Identity
 
         [HttpPut]
         [Route("Update")]
-        public IActionResult Modificar([FromBody] RoleRequestDto roleRequestDto, [FromQuery] Guid id)/*Falta */
+        public IActionResult Modificar([FromBody] RoleRequestDto roleRequestDto, [FromQuery] Guid id)
         {
             if (ModelState.IsValid)
             {

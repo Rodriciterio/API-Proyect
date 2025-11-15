@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PadelClubSystem.Application;
@@ -27,6 +28,7 @@ namespace PadelClubSystem.WebApi.Controllers
 
         [HttpGet]
         [Route("All")]
+        [Authorize(Roles = "Administrador, Cliente, Socio")]
         public async Task<IActionResult> All()
         {
             return Ok(_mapper.Map<IList<TorneoResponseDto>>(_torneo.GetAll()));
@@ -34,6 +36,7 @@ namespace PadelClubSystem.WebApi.Controllers
 
         [HttpGet]
         [Route("ById")]
+        [Authorize(Roles = "Administrador, Cliente, Socio")]
         public async Task<IActionResult> ById(int? Id)
         {
             if (!Id.HasValue)
@@ -49,6 +52,7 @@ namespace PadelClubSystem.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public async Task <IActionResult> Crear(TorneoRequestDto torneoRequestDto)
         {
             if (!ModelState.IsValid)
@@ -59,6 +63,7 @@ namespace PadelClubSystem.WebApi.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Editar(int? Id, TorneoRequestDto torneoRequestDto)
         {
             if (!Id.HasValue)
@@ -74,6 +79,7 @@ namespace PadelClubSystem.WebApi.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Borrar(int? Id)
         {
             if (!Id.HasValue)
